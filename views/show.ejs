@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Note Taking App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      function toggleEdit() {
+        const contentDiv = document.getElementById("content");
+        const editForm = document.getElementById("editForm");
+        const editButton = document.getElementById("editButton");
+        const saveButton = document.getElementById("saveButton");
+        const cancelButton = document.getElementById("cancelButton");
+
+        if (contentDiv.style.display === "none") {
+          contentDiv.style.display = "block";
+          editForm.style.display = "none";
+          editButton.style.display = "inline-block";
+          saveButton.style.display = "none";
+          cancelButton.style.display = "none";
+        } else {
+          contentDiv.style.display = "none";
+          editForm.style.display = "block";
+          editButton.style.display = "none";
+          saveButton.style.display = "inline-block";
+          cancelButton.style.display = "inline-block";
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-gray-900 text-gray-200">
+    <div class="min-h-screen px-4 flex flex-col items-center">
+      <header class="w-full py-8 text-center">
+        <h1 class="text-blue-400 text-4xl font-bold">Note Taking App</h1>
+      </header>
+
+      <main class="w-full max-w-3xl">
+        <a
+          href="/"
+          class="mb-4 text-white bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 inline-flex items-center transition">
+          <svg
+            class="rtl:rotate-180 w-4 h-4 mr-2"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 10">
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 5H1m0 0L5 9M1 5l4-4" />
+          </svg>
+          Go Back
+        </a>
+
+        <section class="mb-8">
+          <h2 class="text-white text-4xl font-semibold tracking-tight mb-4">
+            <%= filename %>
+          </h2>
+          <div
+            id="content"
+            class="content bg-gray-800 p-6 min-h-72 rounded-lg shadow-lg text-gray-300 text-lg leading-relaxed">
+            <%= filedata %>
+          </div>
+          
+          <form
+            id="editForm"
+            action="/edit/<%= filename %>"
+            method="post"
+            class="mt-4"
+            style="display: none">
+            <div class="mb-4">
+              <label
+                for="newTitle"
+                class="block text-sm font-medium text-gray-400"
+                >New Title</label
+              >
+              <input
+                type="text"
+                name="newTitle"
+                id="newTitle"
+                value="<%= filename.replace('.txt', '') %>"
+                class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+            <div class="mb-4">
+              <label
+                for="newContent"
+                class="block text-sm font-medium text-gray-400"
+                >New Content</label
+              >
+              <textarea
+                name="newContent"
+                id="newContent"
+                rows="4"
+                class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+<%= filedata %></textarea
+              >
+            </div>
+          </form>
+          <div class="flex justify-between">
+            <button
+              id="editButton"
+              onclick="toggleEdit()"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center justify-center transition">
+              Edit Note
+            </button>
+            <button
+              id="saveButton"
+              onclick="document.getElementById('editForm').submit();"
+              style="display: none"
+              class="w-full bg-green-600 hover:bg-green-700 text-white font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center justify-center transition">
+              Save Changes
+            </button>
+            <button
+              id="cancelButton"
+              onclick="toggleEdit()"
+              style="display: none"
+              class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center justify-center transition">
+              Cancel
+            </button>
+          </div>
+          <form action="/delete/<%= filename %>" method="post" class="mt-2">
+            <button
+              type="submit"
+              class="w-full bg-red-600 hover:bg-red-700 text-white font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center justify-center transition">
+              Delete Note
+            </button>
+          </form>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
